@@ -50,6 +50,10 @@ export interface ExecResult {
      */
     logs?: any[];
     /**
+     * Array of outgoing transactions
+    */
+    exits?: any[];
+    /**
      * Amount of gas to refund from deleting storage values
      */
     gasRefund?: BN;
@@ -98,7 +102,7 @@ export default class EVM {
     /**
      * Executes a precompiled contract with given data and gas limit.
      */
-    runPrecompile(code: PrecompileFunc, data: Buffer, gasLimit: BN): ExecResult;
+    runPrecompile(code: PrecompileFunc, data: Buffer, gasLimit: BN, value: BN, caller: Buffer): ExecResult;
     _loadCode(message: Message): Promise<void>;
     _generateAddress(message: Message): Promise<Buffer>;
     _reduceSenderBalance(account: Account, message: Message): Promise<void>;

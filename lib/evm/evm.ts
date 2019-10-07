@@ -64,6 +64,10 @@ export interface ExecResult {
    */
   logs?: any[]
   /**
+   * Array of outgoing transactions
+  */
+  exits?: any[]
+  /**
    * Amount of gas to refund from deleting storage values
    */
   gasRefund?: BN
@@ -186,7 +190,7 @@ export default class EVM {
 
     let result: ExecResult
     if (message.isCompiled) {
-      result = this.runPrecompile(message.code as PrecompileFunc, message.data, message.gasLimit)
+      result = this.runPrecompile(message.code as PrecompileFunc, message.data, message.gasLimit, message.value, message.caller)
     } else {
       result = await this.runInterpreter(message)
     }
@@ -369,7 +373,7 @@ export default class EVM {
   /**
    * Executes a precompiled contract with given data and gas limit.
    */
-  runPrecompile(code: PrecompileFunc, data: Buffer, gasLimit: BN): ExecResult {
+  runPrecompile(code: PrecompileFunc, data: Buffer, gasLimit: BN, value: BN, caller: Buffer): ExecResult {
     if (typeof code !== 'function') {
       throw new Error('Invalid precompile')
     }
@@ -378,6 +382,8 @@ export default class EVM {
       data,
       gasLimit,
       _common: this._vm._common,
+      value,
+      caller,
     }
 
     return code(opts)

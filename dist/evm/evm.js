@@ -181,7 +181,7 @@ var EVM = /** @class */ (function () {
                                 }];
                         }
                         if (!message.isCompiled) return [3 /*break*/, 8];
-                        result = this.runPrecompile(message.code, message.data, message.gasLimit);
+                        result = this.runPrecompile(message.code, message.data, message.gasLimit, message.value, message.caller);
                         return [3 /*break*/, 10];
                     case 8: return [4 /*yield*/, this.runInterpreter(message)];
                     case 9:
@@ -391,7 +391,7 @@ var EVM = /** @class */ (function () {
     /**
      * Executes a precompiled contract with given data and gas limit.
      */
-    EVM.prototype.runPrecompile = function (code, data, gasLimit) {
+    EVM.prototype.runPrecompile = function (code, data, gasLimit, value, caller) {
         if (typeof code !== 'function') {
             throw new Error('Invalid precompile');
         }
@@ -399,6 +399,8 @@ var EVM = /** @class */ (function () {
             data: data,
             gasLimit: gasLimit,
             _common: this._vm._common,
+            value: value,
+            caller: caller,
         };
         return code(opts);
     };

@@ -10,4 +10,6 @@ export interface PrecompileInput {
   data: Buffer
   gasLimit: BN
   _common: Common
+  value?: BN
+  caller?: Buffer
 }
