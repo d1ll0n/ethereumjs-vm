@@ -43,7 +43,7 @@ export interface RunBlockResult {
    * Results of executing the transactions in the block
    */
   results: RunTxResult[]
-	txos: any[]
+  txos: any[]
 }
 
 /**
@@ -104,9 +104,6 @@ export default async function runBlock(this: VM, opts: RunBlockOpts): Promise<Ru
   try {
     result = await applyBlock.bind(this)(block, opts.skipBlockValidation)
   } catch (err) {
-    console.log('-- ERR REVERTING STATE --')
-    console.log(err)
-    console.log('-- ERR REVERTING STATE --')
     await state.revert()
     throw err
   }

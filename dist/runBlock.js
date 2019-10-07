@@ -100,9 +100,6 @@ function runBlock(opts) {
                     return [3 /*break*/, 9];
                 case 7:
                     err_1 = _a.sent();
-                    console.log('-- ERR REVERTING STATE --');
-                    console.log(err_1);
-                    console.log('-- ERR REVERTING STATE --');
                     return [4 /*yield*/, state.revert()];
                 case 8:
                     _a.sent();
