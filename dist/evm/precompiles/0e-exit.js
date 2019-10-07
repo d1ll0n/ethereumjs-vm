@@ -21,9 +21,9 @@ function default_1(opts) {
         returnValue: new Buffer(0),
         exits: [{
                 to: to,
-                data: data,
                 caller: opts.caller,
-                value: opts.value
+                value: opts.value,
+                data: data,
             }]
     };
 }

@@ -70,6 +70,7 @@ var EEI = /** @class */ (function () {
         this._gasLeft = gasLeft;
         this._result = {
             logs: [],
+            exits: [],
             returnValue: undefined,
             gasRefund: new BN(0),
             selfdestruct: {},
@@ -530,6 +531,9 @@ var EEI = /** @class */ (function () {
                         if (results.execResult.logs) {
                             this._result.logs = this._result.logs.concat(results.execResult.logs);
                         }
+                        if (results.execResult.exits) {
+                            this._result.exits = this._result.exits.concat(results.execResult.exits);
+                        }
                         // add gasRefund
                         if (results.execResult.gasRefund) {
                             this._result.gasRefund = this._result.gasRefund.add(results.execResult.gasRefund);
@@ -590,6 +594,9 @@ var EEI = /** @class */ (function () {
                         results = _a.sent();
                         if (results.execResult.logs) {
                             this._result.logs = this._result.logs.concat(results.execResult.logs);
+                        }
+                        if (results.execResult.exits) {
+                            this._result.exits = this._result.exits.concat(results.execResult.exits);
                         }
                         // add gasRefund
                         if (results.execResult.gasRefund) {

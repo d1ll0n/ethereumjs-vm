@@ -38,6 +38,14 @@ export interface EVMResult {
   execResult: ExecResult
 }
 
+export interface Exit {
+  to?: Buffer
+  caller?: Buffer
+  value?: BN
+  data?: Buffer
+  // gas: BN
+}
+
 /**
  * Result of executing a call via the [[EVM]].
  */
@@ -66,7 +74,7 @@ export interface ExecResult {
   /**
    * Array of outgoing transactions
   */
-  exits?: any[]
+  exits?: Exit[]
   /**
    * Amount of gas to refund from deleting storage values
    */
@@ -132,6 +140,7 @@ export default class EVM {
       console.log(`Caught error!`)
       console.log(err)
       result.execResult.logs = []
+      result.execResult.exits = [];
       await this._state.revert()
       if (message.isCompiled) {
         // Empty precompiled contracts need to be deleted even in case of OOG
@@ -144,8 +153,6 @@ export default class EVM {
       }
     } else {
       await this._state.commit()
-			console.log('commited woop');
-			console.log(this._state._wrapped._trie._checkpoints);
     }
 
     await this._vm._emit('afterMessage', result)
@@ -154,30 +161,20 @@ export default class EVM {
   }
 
   async _executeCall(message: Message): Promise<EVMResult> {
-    console.log('Ececuting call...')
     const account = await this._state.getAccount(message.caller)
     // Reduce tx value from sender
     if (!message.delegatecall && !message.fromMainnet) {
       await this._reduceSenderBalance(account, message)
     }
-    console.log(`From: ${message.caller.toString('hex')}`)
-    console.log(`To: ${message.to.toString('hex')}`)
-    console.log(`Value: ${message.value}`)
     // Load `to` account
     const toAccount = await this._state.getAccount(message.to)
-    console.log('To Account')
-    console.log(toAccount)
     // Add tx value to the `to` account
     if (!message.delegatecall) {
       await this._addToBalance(toAccount, message)
     }
 
     // Load code
-    console.log(message)
-    console.log('Loading code...')
     await this._loadCode(message)
-    console.log(`Loaded Code:`)
-    console.log(message.code)
     if (!message.code || message.code.length === 0) {
       return {
         gasUsed: new BN(0),
@@ -341,6 +338,7 @@ export default class EVM {
       result = {
         ...result,
         logs: [],
+        exits: [],
         gasRefund: new BN(0),
         selfdestruct: {},
       }

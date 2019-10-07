@@ -30,6 +30,7 @@ export interface RunResult {
     logs: any;
     returnValue?: Buffer;
     gasRefund: BN;
+    exits: any[];
     /**
      * A map from the accounts that have self-destructed to the addresses to send their funds to
      */

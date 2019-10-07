@@ -24,6 +24,12 @@ export interface EVMResult {
      */
     execResult: ExecResult;
 }
+export interface Exit {
+    to?: Buffer;
+    caller?: Buffer;
+    value?: BN;
+    data?: Buffer;
+}
 /**
  * Result of executing a call via the [[EVM]].
  */
@@ -52,7 +58,7 @@ export interface ExecResult {
     /**
      * Array of outgoing transactions
     */
-    exits?: any[];
+    exits?: Exit[];
     /**
      * Amount of gas to refund from deleting storage values
      */

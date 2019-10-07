@@ -22,9 +22,9 @@ export default function(opts: PrecompileInput): ExecResult {
     returnValue: new Buffer(0),
     exits: [{
       to,
-      data,
       caller: opts.caller,
-      value: opts.value
+      value: opts.value,
+      data,
     }]
   }
 }

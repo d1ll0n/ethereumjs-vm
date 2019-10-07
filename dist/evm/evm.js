@@ -107,6 +107,7 @@ var EVM = /** @class */ (function () {
                         console.log("Caught error!");
                         console.log(err);
                         result.execResult.logs = [];
+                        result.execResult.exits = [];
                         return [4 /*yield*/, this._state.revert()];
                     case 7:
                         _a.sent();
@@ -120,8 +121,6 @@ var EVM = /** @class */ (function () {
                     case 10: return [4 /*yield*/, this._state.commit()];
                     case 11:
                         _a.sent();
-                        console.log('commited woop');
-                        console.log(this._state._wrapped._trie._checkpoints);
                         _a.label = 12;
                     case 12: return [4 /*yield*/, this._vm._emit('afterMessage', result)];
                     case 13:
@@ -136,11 +135,9 @@ var EVM = /** @class */ (function () {
             var account, toAccount, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log('Ececuting call...');
-                        return [4 /*yield*/, this._state.getAccount(message.caller)
-                            // Reduce tx value from sender
-                        ];
+                    case 0: return [4 /*yield*/, this._state.getAccount(message.caller)
+                        // Reduce tx value from sender
+                    ];
                     case 1:
                         account = _a.sent();
                         if (!(!message.delegatecall && !message.fromMainnet)) return [3 /*break*/, 3];
@@ -148,29 +145,22 @@ var EVM = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         _a.label = 3;
-                    case 3:
-                        console.log("From: " + message.caller.toString('hex'));
-                        console.log("To: " + message.to.toString('hex'));
-                        console.log("Value: " + message.value);
-                        return [4 /*yield*/, this._state.getAccount(message.to)];
+                    case 3: return [4 /*yield*/, this._state.getAccount(message.to)
+                        // Add tx value to the `to` account
+                    ];
                     case 4:
                         toAccount = _a.sent();
-                        console.log('To Account');
-                        console.log(toAccount);
                         if (!!message.delegatecall) return [3 /*break*/, 6];
                         return [4 /*yield*/, this._addToBalance(toAccount, message)];
                     case 5:
                         _a.sent();
                         _a.label = 6;
-                    case 6:
-                        // Load code
-                        console.log(message);
-                        console.log('Loading code...');
-                        return [4 /*yield*/, this._loadCode(message)];
+                    case 6: 
+                    // Load code
+                    return [4 /*yield*/, this._loadCode(message)];
                     case 7:
+                        // Load code
                         _a.sent();
-                        console.log("Loaded Code:");
-                        console.log(message.code);
                         if (!message.code || message.code.length === 0) {
                             return [2 /*return*/, {
                                     gasUsed: new BN(0),
@@ -369,7 +359,7 @@ var EVM = /** @class */ (function () {
                                 gasUsed = message.gasLimit;
                             }
                             // Clear the result on error
-                            result = __assign(__assign({}, result), { logs: [], gasRefund: new BN(0), selfdestruct: {} });
+                            result = __assign(__assign({}, result), { logs: [], exits: [], gasRefund: new BN(0), selfdestruct: {} });
                         }
                         if (message.mainnetAddress)
                             returnValue = message.code;

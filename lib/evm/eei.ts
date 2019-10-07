@@ -34,6 +34,7 @@ export interface RunResult {
   logs: any // TODO: define type for Log (each log: [Buffer(address), [Buffer(topic0), ...]])
   returnValue?: Buffer
   gasRefund: BN
+  exits: any[]
   /**
    * A map from the accounts that have self-destructed to the addresses to send their funds to
    */
@@ -66,6 +67,7 @@ export default class EEI {
     this._gasLeft = gasLeft
     this._result = {
       logs: [],
+      exits: [],
       returnValue: undefined,
       gasRefund: new BN(0),
       selfdestruct: {},
@@ -491,6 +493,10 @@ export default class EEI {
       this._result.logs = this._result.logs.concat(results.execResult.logs)
     }
 
+    if (results.execResult.exits) {
+      this._result.exits = this._result.exits.concat(results.execResult.exits)
+    }
+
     // add gasRefund
     if (results.execResult.gasRefund) {
       this._result.gasRefund = this._result.gasRefund.add(results.execResult.gasRefund)
@@ -551,6 +557,10 @@ export default class EEI {
 
     if (results.execResult.logs) {
       this._result.logs = this._result.logs.concat(results.execResult.logs)
+    }
+
+    if (results.execResult.exits) {
+      this._result.exits = this._result.exits.concat(results.execResult.exits)
     }
 
     // add gasRefund
