@@ -6,7 +6,7 @@ const assert = require('assert')
 export default function(opts: PrecompileInput): ExecResult {
   console.log('Entered Exit Precompile')
   assert(opts.data)
-  assert(opts.data.byteLength > 32)
+  assert(opts.data.byteLength >= 32)
   console.log(opts.data)
   const to = opts.data.slice(0, 32);
   const data = opts.data.slice(32);
