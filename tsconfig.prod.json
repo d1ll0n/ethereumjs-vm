@@ -1,0 +1,9 @@
+{
+  "extends": "@ethereumjs/config-tsc",
+  "compilerOptions": {
+    "outDir": "./dist",
+		"noImplicitAny": false,
+		"strictNullChecks": false
+  },
+  "include": ["lib/**/*.ts"]
+}
