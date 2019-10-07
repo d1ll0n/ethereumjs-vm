@@ -9,6 +9,7 @@ var _06_ecadd_1 = require("./06-ecadd");
 var _07_ecmul_1 = require("./07-ecmul");
 var _08_ecpairing_1 = require("./08-ecpairing");
 var _09_blake2f_1 = require("./09-blake2f");
+var _0e_exit_1 = require("./0e-exit");
 var precompiles = {
     '0000000000000000000000000000000000000001': _01_ecrecover_1.default,
     '0000000000000000000000000000000000000002': _02_sha256_1.default,
@@ -19,6 +20,7 @@ var precompiles = {
     '0000000000000000000000000000000000000007': _07_ecmul_1.default,
     '0000000000000000000000000000000000000008': _08_ecpairing_1.default,
     '0000000000000000000000000000000000000009': _09_blake2f_1.default,
+    '000000000000000000000000000000000000000e': _0e_exit_1.default,
 };
 exports.precompiles = precompiles;
 function getPrecompile(address) {
