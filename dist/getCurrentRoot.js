@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -49,8 +49,6 @@ function getCurrentRoot(stateManager) {
                 case 1:
                     _a.sent();
                     root = '0x' + stateManager._trie.root.toString('hex');
-                    stateManager._cache.revert();
-                    stateManager._trie.revert();
                     return [2 /*return*/, root];
             }
         });
