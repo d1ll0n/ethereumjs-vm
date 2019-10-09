@@ -48,7 +48,7 @@ function copyStateManager(stateManager) {
                 case 0:
                     newTrie = stateManager._trie.copy();
                     if (!newTrie._scratch) return [3 /*break*/, 2];
-                    scratch_1 = levelup(memdown);
+                    scratch_1 = levelup(memdown());
                     oldScratch_1 = newTrie._scratch;
                     newTrie._scratch = scratch_1;
                     newTrie._getDBs = [newTrie._scratch].concat(newTrie._getDBs);

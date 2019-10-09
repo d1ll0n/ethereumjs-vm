@@ -6,7 +6,7 @@ const memdown = require('memdown')
 async function copyStateManager(stateManager) {
   const newTrie = stateManager._trie.copy() as any;
   if (newTrie._scratch) {
-    const scratch = levelup(memdown);
+    const scratch = levelup(memdown());
     const oldScratch = newTrie._scratch;
     newTrie._scratch = scratch;
     newTrie._getDBs = [newTrie._scratch].concat(newTrie._getDBs);

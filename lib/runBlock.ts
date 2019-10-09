@@ -173,7 +173,9 @@ async function applyBlock(this: VM, block: any, skipBlockValidation = false) {
   // Apply transactions
   const txResults = await applyTransactions.bind(this)(block)
   // Pay ommers and miners
+    /*
   await assignBlockRewards.bind(this)(block)
+     */
   return txResults
 }
 

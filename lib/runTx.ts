@@ -264,12 +264,14 @@ async function _runTx(this: VM, opts: RunTxOpts): Promise<RunTxResult> {
   }
 
   // Update miner's balance
+  /*
   const minerAccount = await state.getAccount(block.header.coinbase)
   // add the amount spent on gas to the miner's account
   minerAccount.balance = toBuffer(new BN(minerAccount.balance).add(results.amountSpent))
   if (!new BN(minerAccount.balance).isZero()) {
     await state.putAccount(block.header.coinbase, minerAccount)
   }
+   */
 
   /*
    * Cleanup accounts

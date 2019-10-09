@@ -200,7 +200,7 @@ function runTx(opts) {
 exports.default = runTx;
 function _runTx(opts) {
     return __awaiter(this, void 0, void 0, function () {
-        var block, tx, state, basefee, gasLimit, fromAccount, txContext, message, evm, results, finalFromBalance, minerAccount, keys, _i, keys_1, k;
+        var block, tx, state, basefee, gasLimit, fromAccount, txContext, message, evm, results, finalFromBalance, keys, _i, keys_1, k;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -305,34 +305,22 @@ function _runTx(opts) {
                 case 7:
                     _a.sent();
                     _a.label = 8;
-                case 8: return [4 /*yield*/, state.getAccount(block.header.coinbase)
-                    // add the amount spent on gas to the miner's account
-                ];
+                case 8:
+                    if (!results.execResult.selfdestruct) return [3 /*break*/, 12];
+                    keys = Object.keys(results.execResult.selfdestruct);
+                    _i = 0, keys_1 = keys;
+                    _a.label = 9;
                 case 9:
-                    minerAccount = _a.sent();
-                    // add the amount spent on gas to the miner's account
-                    minerAccount.balance = ethereumjs_util_1.toBuffer(new BN(minerAccount.balance).add(results.amountSpent));
-                    if (!!new BN(minerAccount.balance).isZero()) return [3 /*break*/, 11];
-                    return [4 /*yield*/, state.putAccount(block.header.coinbase, minerAccount)];
+                    if (!(_i < keys_1.length)) return [3 /*break*/, 12];
+                    k = keys_1[_i];
+                    return [4 /*yield*/, state.putAccount(Buffer.from(k, 'hex'), new ethereumjs_account_1.default())];
                 case 10:
                     _a.sent();
                     _a.label = 11;
                 case 11:
-                    if (!results.execResult.selfdestruct) return [3 /*break*/, 15];
-                    keys = Object.keys(results.execResult.selfdestruct);
-                    _i = 0, keys_1 = keys;
-                    _a.label = 12;
-                case 12:
-                    if (!(_i < keys_1.length)) return [3 /*break*/, 15];
-                    k = keys_1[_i];
-                    return [4 /*yield*/, state.putAccount(Buffer.from(k, 'hex'), new ethereumjs_account_1.default())];
-                case 13:
-                    _a.sent();
-                    _a.label = 14;
-                case 14:
                     _i++;
-                    return [3 /*break*/, 12];
-                case 15: return [4 /*yield*/, state.cleanupTouchedAccounts()
+                    return [3 /*break*/, 9];
+                case 12: return [4 /*yield*/, state.cleanupTouchedAccounts()
                     /**
                      * The `afterTx` event
                      *
@@ -341,7 +329,7 @@ function _runTx(opts) {
                      * @property {Object} result result of the transaction
                      */
                 ];
-                case 16:
+                case 13:
                     _a.sent();
                     /**
                      * The `afterTx` event
@@ -351,7 +339,7 @@ function _runTx(opts) {
                      * @property {Object} result result of the transaction
                      */
                     return [4 /*yield*/, onAfterTx(this)];
-                case 17:
+                case 14:
                     /**
                      * The `afterTx` event
                      *
@@ -361,7 +349,7 @@ function _runTx(opts) {
                      */
                     _a.sent();
                     return [4 /*yield*/, this._emit('afterTx', results)];
-                case 18:
+                case 15:
                     _a.sent();
                     return [2 /*return*/, results];
             }

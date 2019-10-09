@@ -191,14 +191,16 @@ function applyBlock(block, skipBlockValidation) {
                     _a.label = 3;
                 case 3: return [4 /*yield*/, applyTransactions.bind(this)(block)
                     // Pay ommers and miners
+                    /*
+                  await assignBlockRewards.bind(this)(block)
+                     */
                 ];
                 case 4:
                     txResults = _a.sent();
                     // Pay ommers and miners
-                    return [4 /*yield*/, assignBlockRewards.bind(this)(block)];
-                case 5:
-                    // Pay ommers and miners
-                    _a.sent();
+                    /*
+                  await assignBlockRewards.bind(this)(block)
+                     */
                     return [2 /*return*/, txResults];
             }
         });
