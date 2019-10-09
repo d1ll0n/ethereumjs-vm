@@ -62,6 +62,7 @@
     "ethereumjs-util": "^6.1.0",
     "fake-merkle-patricia-tree": "^1.0.1",
     "functional-red-black-tree": "^1.0.1",
+    "level-ws": "^2.0.0",
     "merkle-patricia-tree": "^2.3.2",
     "rustbn.js": "~0.2.0",
     "safe-buffer": "^5.1.1",

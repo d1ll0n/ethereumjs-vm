@@ -1,5 +1,6 @@
 const clone = require('clone');
 const levelup = require('levelup');
+const WriteStream = require('level-ws');
 const memdown = require('memdown')
 
 async function copyStateManager(stateManager) {
@@ -17,7 +18,7 @@ async function copyStateManager(stateManager) {
     newTrie.putRaw = stateManager._trie.putRaw;
     newTrie._checkpoints = stateManager._trie._checkpoints.slice();
     await new Promise((resolve, reject) => newTrie.createScratchReadStream(oldScratch)
-      .pipe(scratch.createWriteStream())
+      .pipe(WriteStream(scratch))
       .on('close', (err, result) => err ? reject(err) : resolve(result)))
   }
   return Object.assign({}, stateManager, {

@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var clone = require('clone');
 var levelup = require('levelup');
+var WriteStream = require('level-ws');
 var memdown = require('memdown');
 function copyStateManager(stateManager) {
     return __awaiter(this, void 0, void 0, function () {
@@ -59,7 +60,7 @@ function copyStateManager(stateManager) {
                     newTrie.putRaw = stateManager._trie.putRaw;
                     newTrie._checkpoints = stateManager._trie._checkpoints.slice();
                     return [4 /*yield*/, new Promise(function (resolve, reject) { return newTrie.createScratchReadStream(oldScratch_1)
-                            .pipe(scratch_1.createWriteStream())
+                            .pipe(WriteStream(scratch_1))
                             .on('close', function (err, result) { return err ? reject(err) : resolve(result); }); })];
                 case 1:
                     _a.sent();
