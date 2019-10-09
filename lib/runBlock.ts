@@ -72,7 +72,6 @@ export interface TxReceipt {
  * @ignore
  */
 export default async function runBlock(this: VM, opts: RunBlockOpts): Promise<RunBlockResult> {
-	console.log(opts);
   if (opts === undefined) {
     throw new Error('invalid input, opts must be provided')
   }
