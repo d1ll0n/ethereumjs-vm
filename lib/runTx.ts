@@ -117,19 +117,10 @@ async function onBeforeTx(vm, tx) {
 
 async function onAfterTx(vm) {
   const { sioMap } = vm;
-  console.log('--SIO AFTER uncaught failure--')
-  console.log('possibleUncaughtFailure')
-  console.log(sioMap.possibleUncaughtFailure)
-  console.log('success')
-  console.log(sioMap.receipts[0].callsuccess)
-  console.log('returndata')
-  console.log(sioMap.receipts[0].returndata)
 	if (sioMap.possibleUncaughtFailure) sioMap.receipts[0].callsuccess = false;
 	sioMap.receipts[0].returndata = sioMap.lastReturnData || '0x';
 	sioMap.receipts[0].stateRootLeave = await getCurrentRoot((sioMap.lastStep || {}).stateManager || await copyStateManager(vm.stateManager));
-  console.log('stateRootLeave')
-  console.log(sioMap.receipts[0].stateRootLeave)
-  console.log('--SIO AFTER uncaught failure--')
+  console.log(`SIO Receipt State Roots\n\tEnter: ${sioMap.receipts[0].stateRootEnter}\n\tLeave: ${sioMap.receipts[0].stateRootLeave}`)
 	sioMap.deferred.resolve();
 }
 

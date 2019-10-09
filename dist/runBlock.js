@@ -51,7 +51,6 @@ function runBlock(opts) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    console.log(opts);
                     if (opts === undefined) {
                         throw new Error('invalid input, opts must be provided');
                     }

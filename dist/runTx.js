@@ -119,13 +119,6 @@ function onAfterTx(vm) {
             switch (_d.label) {
                 case 0:
                     sioMap = vm.sioMap;
-                    console.log('--SIO AFTER uncaught failure--');
-                    console.log('possibleUncaughtFailure');
-                    console.log(sioMap.possibleUncaughtFailure);
-                    console.log('success');
-                    console.log(sioMap.receipts[0].callsuccess);
-                    console.log('returndata');
-                    console.log(sioMap.receipts[0].returndata);
                     if (sioMap.possibleUncaughtFailure)
                         sioMap.receipts[0].callsuccess = false;
                     sioMap.receipts[0].returndata = sioMap.lastReturnData || '0x';
@@ -140,9 +133,7 @@ function onAfterTx(vm) {
                 case 2: return [4 /*yield*/, _b.apply(void 0, [_c])];
                 case 3:
                     _a.stateRootLeave = _d.sent();
-                    console.log('stateRootLeave');
-                    console.log(sioMap.receipts[0].stateRootLeave);
-                    console.log('--SIO AFTER uncaught failure--');
+                    console.log("SIO Receipt State Roots\n\tEnter: " + sioMap.receipts[0].stateRootEnter + "\n\tLeave: " + sioMap.receipts[0].stateRootLeave);
                     sioMap.deferred.resolve();
                     return [2 /*return*/];
             }
