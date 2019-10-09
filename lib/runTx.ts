@@ -105,7 +105,7 @@ async function onBeforeTx(vm, tx) {
  		internal: [],
  		logs: [],
  		sio: [],
-		stateRootEnter: await getCurrentRoot(copyStateManager(vm.stateManager)),
+		stateRootEnter: await getCurrentRoot(await copyStateManager(vm.stateManager)),
  		callsuccess: true
  	});
  	sioMap.depth = 0;
@@ -126,7 +126,7 @@ async function onAfterTx(vm) {
   console.log(sioMap.receipts[0].returndata)
 	if (sioMap.possibleUncaughtFailure) sioMap.receipts[0].callsuccess = false;
 	sioMap.receipts[0].returndata = sioMap.lastReturnData || '0x';
-	sioMap.receipts[0].stateRootLeave = await getCurrentRoot((sioMap.lastStep || {}).stateManager || copyStateManager(vm.stateManager));
+	sioMap.receipts[0].stateRootLeave = await getCurrentRoot((sioMap.lastStep || {}).stateManager || await copyStateManager(vm.stateManager));
   console.log('stateRootLeave')
   console.log(sioMap.receipts[0].stateRootLeave)
   console.log('--SIO AFTER uncaught failure--')
