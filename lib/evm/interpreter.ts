@@ -8,8 +8,7 @@ import Stack from './stack'
 import EEI from './eei'
 import { Opcode } from './opcodes'
 import { handlers as opHandlers, OpHandler } from './opFns.js'
-import copyStateManager from '../copyStateManager';
-import getCurrentRoot from '../getCurrentRoot';
+import getRoot from '../getRoot';
 const {
 	toHex,
 	addHexPrefix,
@@ -24,8 +23,7 @@ const {
 const copyStep = (step) => Object.assign({}, step, {
 	opcode: Object.assign({}, step.opcode),
 	stack: step.stack.slice(),
-	memory: step.memory.slice(),
-	stateManager: copyStateManager(step.stateManager)
+	memory: step.memory.slice()
 });
 
 const addOneToStackOffset = [
@@ -84,7 +82,7 @@ async function onStep(vm, step) {
  		}
     current.sio.push(sio);
 		sioMap.current.returndata = sio.metadata.returndata;
-		sioMap.current.stateRootLeave = await getCurrentRoot(sioMap.lastStep.stateManager);
+		sioMap.current.stateRootLeave = await getRoot(sioMap.lastStep.stateManager);
 		sioMap.current.callsuccess = sio.metadata.callsuccess;
 		sioMap.current = current;
 		sioMap.currentAddress = sioMap.current.caller;
@@ -102,7 +100,7 @@ async function onStep(vm, step) {
  				sioMap.current.sio.push(sioMap.trigger);
  				break;
 			case 'sstore':
-				sioMap.trigger.metadata.stateRoot = await getCurrentRoot(step.stateManager);
+				sioMap.trigger.metadata.stateRoot = await getRoot(step.stateManager);
 				sioMap.current.sio.push(sioMap.trigger);
 				break;
  			case 'balance':
@@ -118,7 +116,7 @@ async function onStep(vm, step) {
  	}
 	if (sioMap.internalCallTrigger) {
 		if (step.depth === sioMap.internalCallTrigger) {
-			sioMap.current.stateRootEnter = await getCurrentRoot(step.stateManager);
+			sioMap.current.stateRootEnter = await getRoot(step.stateManager);
 		}
 		delete sioMap.internalCallTrigger;
 	}
@@ -210,7 +208,7 @@ async function onStep(vm, step) {
    				}))(calldata)
    			}
 			} as any;
-			if (op === 'call' || op === 'callcode') internal.metadata.stateRoot = await getCurrentRoot(step.stateManager);
+			if (op === 'call' || op === 'callcode') internal.metadata.stateRoot = await getRoot(step.stateManager);
  			if (addOneToStackOffset[op]) internal.metadata.callvalue = wordToNumber(fromBack(step.stack, 2));
  			sioMap.depthTrigger[step.depth] = {
 				current: sioMap.current,

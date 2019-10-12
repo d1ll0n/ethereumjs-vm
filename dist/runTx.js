@@ -43,16 +43,15 @@ var bloom_1 = require("./bloom");
 var evm_1 = require("./evm/evm");
 var message_1 = require("./evm/message");
 var txContext_1 = require("./evm/txContext");
-var getCurrentRoot_1 = require("./getCurrentRoot");
-var copyStateManager_1 = require("./copyStateManager");
+var getRoot_1 = require("./getRoot");
 var Block = require('ethereumjs-block');
 var _a = require('ethereumjs-util'), toHex = _a.toHex, addHexPrefix = _a.addHexPrefix, stripHexPrefix = _a.stripHexPrefix, bufferToHex = _a.bufferToHex;
 var _b = require('web3-utils'), soliditySha3 = _b.soliditySha3, leftPad = _b.leftPad;
 function onBeforeTx(vm, tx) {
     return __awaiter(this, void 0, void 0, function () {
-        var sioMap, resolve, reject, transactionHash, origin, to, _a, _b, _c, _d;
-        return __generator(this, function (_e) {
-            switch (_e.label) {
+        var sioMap, resolve, reject, transactionHash, origin, to, _a, _b, _c;
+        return __generator(this, function (_d) {
+            switch (_d.label) {
                 case 0:
                     sioMap = vm.sioMap = {};
                     sioMap.receipts = [];
@@ -95,11 +94,9 @@ function onBeforeTx(vm, tx) {
                         logs: [],
                         sio: []
                     };
-                    _d = getCurrentRoot_1.default;
-                    return [4 /*yield*/, copyStateManager_1.default(vm.stateManager)];
-                case 1: return [4 /*yield*/, _d.apply(void 0, [_e.sent()])];
-                case 2:
-                    _b.apply(_a, [(_c.stateRootEnter = _e.sent(),
+                    return [4 /*yield*/, getRoot_1.default(vm.stateManager)];
+                case 1:
+                    _b.apply(_a, [(_c.stateRootEnter = _d.sent(),
                             _c.callsuccess = true,
                             _c)]);
                     sioMap.depth = 0;
@@ -114,25 +111,18 @@ function onBeforeTx(vm, tx) {
 }
 function onAfterTx(vm) {
     return __awaiter(this, void 0, void 0, function () {
-        var sioMap, _a, _b, _c;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var sioMap, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     sioMap = vm.sioMap;
                     if (sioMap.possibleUncaughtFailure)
                         sioMap.receipts[0].callsuccess = false;
                     sioMap.receipts[0].returndata = sioMap.lastReturnData || '0x';
                     _a = sioMap.receipts[0];
-                    _b = getCurrentRoot_1.default;
-                    _c = (sioMap.lastStep || {}).stateManager;
-                    if (_c) return [3 /*break*/, 2];
-                    return [4 /*yield*/, copyStateManager_1.default(vm.stateManager)];
+                    return [4 /*yield*/, getRoot_1.default((sioMap.lastStep || {}).stateManager || vm.stateManager)];
                 case 1:
-                    _c = (_d.sent());
-                    _d.label = 2;
-                case 2: return [4 /*yield*/, _b.apply(void 0, [_c])];
-                case 3:
-                    _a.stateRootLeave = _d.sent();
+                    _a.stateRootLeave = _b.sent();
                     console.log("SIO Receipt State Roots\n\tEnter: " + sioMap.receipts[0].stateRootEnter + "\n\tLeave: " + sioMap.receipts[0].stateRootLeave);
                     sioMap.deferred.resolve();
                     return [2 /*return*/];

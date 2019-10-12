@@ -8,8 +8,7 @@ import { default as EVM, EVMResult } from './evm/evm'
 import Message from './evm/message'
 import TxContext from './evm/txContext'
 import PStateManager from './state/promisified'
-import getCurrentRoot from './getCurrentRoot';
-import copyStateManager from './copyStateManager';
+import getRoot from './getRoot';
 const Block = require('ethereumjs-block')
 const {
 	toHex,
@@ -105,7 +104,7 @@ async function onBeforeTx(vm, tx) {
  		internal: [],
  		logs: [],
  		sio: [],
-		stateRootEnter: await getCurrentRoot(await copyStateManager(vm.stateManager)),
+		stateRootEnter: await getRoot(vm.stateManager),
  		callsuccess: true
  	});
  	sioMap.depth = 0;
@@ -119,7 +118,7 @@ async function onAfterTx(vm) {
   const { sioMap } = vm;
 	if (sioMap.possibleUncaughtFailure) sioMap.receipts[0].callsuccess = false;
 	sioMap.receipts[0].returndata = sioMap.lastReturnData || '0x';
-	sioMap.receipts[0].stateRootLeave = await getCurrentRoot((sioMap.lastStep || {}).stateManager || await copyStateManager(vm.stateManager));
+	sioMap.receipts[0].stateRootLeave = await getRoot((sioMap.lastStep || {}).stateManager || vm.stateManager);
   console.log(`SIO Receipt State Roots\n\tEnter: ${sioMap.receipts[0].stateRootEnter}\n\tLeave: ${sioMap.receipts[0].stateRootLeave}`)
 	sioMap.deferred.resolve();
 }

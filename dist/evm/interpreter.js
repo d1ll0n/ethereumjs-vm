@@ -52,15 +52,13 @@ var exceptions_1 = require("../exceptions");
 var memory_1 = require("./memory");
 var stack_1 = require("./stack");
 var opFns_js_1 = require("./opFns.js");
-var copyStateManager_1 = require("../copyStateManager");
-var getCurrentRoot_1 = require("../getCurrentRoot");
+var getRoot_1 = require("../getRoot");
 var _a = require('ethereumjs-util'), toHex = _a.toHex, addHexPrefix = _a.addHexPrefix, stripHexPrefix = _a.stripHexPrefix, bufferToHex = _a.bufferToHex;
 var _b = require('web3-utils'), soliditySha3 = _b.soliditySha3, leftPad = _b.leftPad;
 var copyStep = function (step) { return Object.assign({}, step, {
     opcode: Object.assign({}, step.opcode),
     stack: step.stack.slice(),
-    memory: step.memory.slice(),
-    stateManager: copyStateManager_1.default(step.stateManager)
+    memory: step.memory.slice()
 }); };
 var addOneToStackOffset = [
     'callcode',
@@ -122,7 +120,7 @@ function onStep(vm, step) {
                     current.sio.push(sio);
                     sioMap.current.returndata = sio.metadata.returndata;
                     _b = sioMap.current;
-                    return [4 /*yield*/, getCurrentRoot_1.default(sioMap.lastStep.stateManager)];
+                    return [4 /*yield*/, getRoot_1.default(sioMap.lastStep.stateManager)];
                 case 1:
                     _b.stateRootLeave = _h.sent();
                     sioMap.current.callsuccess = sio.metadata.callsuccess;
@@ -152,7 +150,7 @@ function onStep(vm, step) {
                     return [3 /*break*/, 8];
                 case 4:
                     _d = sioMap.trigger.metadata;
-                    return [4 /*yield*/, getCurrentRoot_1.default(step.stateManager)];
+                    return [4 /*yield*/, getRoot_1.default(step.stateManager)];
                 case 5:
                     _d.stateRoot = _h.sent();
                     sioMap.current.sio.push(sioMap.trigger);
@@ -172,7 +170,7 @@ function onStep(vm, step) {
                     if (!sioMap.internalCallTrigger) return [3 /*break*/, 12];
                     if (!(step.depth === sioMap.internalCallTrigger)) return [3 /*break*/, 11];
                     _e = sioMap.current;
-                    return [4 /*yield*/, getCurrentRoot_1.default(step.stateManager)];
+                    return [4 /*yield*/, getRoot_1.default(step.stateManager)];
                 case 10:
                     _e.stateRootEnter = _h.sent();
                     _h.label = 11;
@@ -282,7 +280,7 @@ function onStep(vm, step) {
                     };
                     if (!(op === 'call' || op === 'callcode')) return [3 /*break*/, 22];
                     _g = internal.metadata;
-                    return [4 /*yield*/, getCurrentRoot_1.default(step.stateManager)];
+                    return [4 /*yield*/, getRoot_1.default(step.stateManager)];
                 case 21:
                     _g.stateRoot = _h.sent();
                     _h.label = 22;
