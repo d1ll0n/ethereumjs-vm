@@ -54,6 +54,7 @@
     "async": "^2.1.2",
     "async-eventemitter": "^0.2.2",
     "clone": "^2.1.2",
+    "core-js-pure": "^3.2.1",
     "ethereumjs-account": "^3.0.0",
     "ethereumjs-block": "~2.2.0",
     "ethereumjs-blockchain": "^4.0.1",
@@ -63,7 +64,7 @@
     "fake-merkle-patricia-tree": "^1.0.1",
     "functional-red-black-tree": "^1.0.1",
     "level-ws": "^2.0.0",
-    "merkle-patricia-tree": "^2.3.2",
+    "merkle-patricia-tree": "^3.0.0",
     "rustbn.js": "~0.2.0",
     "safe-buffer": "^5.1.1",
     "web3-utils": "^1.2.1"

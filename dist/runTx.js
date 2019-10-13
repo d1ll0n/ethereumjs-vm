@@ -123,7 +123,7 @@ function onAfterTx(vm) {
                     return [4 /*yield*/, getRoot_1.default((sioMap.lastStep || {}).stateManager || vm.stateManager)];
                 case 1:
                     _a.stateRootLeave = _b.sent();
-                    console.log("SIO Receipt State Roots\n\tEnter: " + sioMap.receipts[0].stateRootEnter + "\n\tLeave: " + sioMap.receipts[0].stateRootLeave);
+                    console.log("SIO Receipt State Roots\n\tEnter: " + sioMap.receipts[0].stateRootEnter.toString('hex') + "\n\tLeave: " + sioMap.receipts[0].stateRootLeave.toString('hex'));
                     sioMap.deferred.resolve();
                     return [2 /*return*/];
             }

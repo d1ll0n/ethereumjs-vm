@@ -36,39 +36,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var clone = require('clone');
-var level = require('level-mem');
-var WriteStream = require('level-ws');
+var cache_1 = require("./state/cache");
 function getRoot(stateManager) {
     return __awaiter(this, void 0, void 0, function () {
-        var newTrie, scratch_1, _cache, _checkpoints, _oldCache;
+        var newTrie, cache;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    newTrie = stateManager._trie.copy();
-                    newTrie._checkpoints = stateManager._trie._checkpoints.slice();
-                    if (!newTrie._scratch) return [3 /*break*/, 2];
-                    scratch_1 = level();
-                    return [4 /*yield*/, new Promise(function (resolve, reject) { return newTrie.createScratchReadStream(newTrie._scratch).pipe(WriteStream(scratch_1)).on('end', function () { return resolve(); }); })];
+                    newTrie = stateManager._trie.copy(true);
+                    newTrie._checkpoints = stateManager._trie._checkpoints.slice(0);
+                    cache = new cache_1.default(newTrie);
+                    stateManager._cache._cache.forEach(function (key, value) {
+                        cache._cache = cache._cache.insert(key, value);
+                    });
+                    return [4 /*yield*/, new Promise(function (resolve, reject) { return cache.flush(function (err) { return err ? reject(err) : resolve(); }); })];
                 case 1:
                     _a.sent();
-                    newTrie._scratch = scratch_1;
-                    newTrie._getDBs = [newTrie._scratch].concat(newTrie._getDBs.slice(1));
-                    newTrie.__putDBs = newTrie._putDBs;
-                    newTrie._putDBs = [newTrie._scratch];
-                    newTrie._putRaw = newTrie.putRaw;
-                    newTrie.putRaw = stateManager._trie.putRaw;
-                    _a.label = 2;
-                case 2:
-                    _cache = stateManager;
-                    _checkpoints = _cache._checkpoints, _oldCache = _cache._cache;
-                    _cache._trie = newTrie;
-                    _cache._checkpoints = _checkpoints.slice();
-                    return [4 /*yield*/, new Promise(function (resolve, reject) { return _cache.flush(function (err) { return err ? reject(err) : resolve(); }); })];
-                case 3:
-                    _a.sent();
-                    _cache._cache = _oldCache;
-                    _cache._checkpoints = _checkpoints;
                     return [2 /*return*/, newTrie._root];
             }
         });

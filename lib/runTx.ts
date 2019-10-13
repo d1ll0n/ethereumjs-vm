@@ -119,7 +119,7 @@ async function onAfterTx(vm) {
 	if (sioMap.possibleUncaughtFailure) sioMap.receipts[0].callsuccess = false;
 	sioMap.receipts[0].returndata = sioMap.lastReturnData || '0x';
 	sioMap.receipts[0].stateRootLeave = await getRoot((sioMap.lastStep || {}).stateManager || vm.stateManager);
-  console.log(`SIO Receipt State Roots\n\tEnter: ${sioMap.receipts[0].stateRootEnter}\n\tLeave: ${sioMap.receipts[0].stateRootLeave}`)
+  console.log(`SIO Receipt State Roots\n\tEnter: ${sioMap.receipts[0].stateRootEnter.toString('hex')}\n\tLeave: ${sioMap.receipts[0].stateRootLeave.toString('hex')}`)
 	sioMap.deferred.resolve();
 }
 
